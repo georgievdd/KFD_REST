@@ -1,4 +1,4 @@
-### api
+# api
 ## auth
 - POST /auth/login #аторизация
 - POST /auth/registration #регистрация
