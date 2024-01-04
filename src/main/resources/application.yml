@@ -1,0 +1,22 @@
+spring:
+  application:
+    name:
+      "kfd"
+  main:
+    banner-mode: off
+
+  datasource:
+    url: "jdbc:postgresql://localhost:5431/postgres"
+    username: "user"
+    password: "password"
+  jpa:
+    generate-ddl: true
+
+server:
+  port: 8080
+
+
+jwt:
+  key: "secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key_secret_key"
+  access-token-expiration: 30000
+  refresh-token-expiration: 100000
