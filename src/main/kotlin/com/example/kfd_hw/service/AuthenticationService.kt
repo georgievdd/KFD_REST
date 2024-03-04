@@ -7,5 +7,5 @@ import com.example.kfd_hw.dto.authentication.RegistrationRequest
 interface AuthenticationService {
     fun login(authRequest: AuthenticationRequest): AuthenticationResponse
     fun registration(registrationRequest: RegistrationRequest): AuthenticationResponse
-    fun refreshAccessToken(token: String): AuthenticationResponse
+    fun refresh(refreshToken: String): AuthenticationResponse
 }

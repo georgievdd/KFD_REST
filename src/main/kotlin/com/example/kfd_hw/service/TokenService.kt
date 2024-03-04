@@ -1,19 +1,17 @@
-package com.example.kfd_hw.service
-
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
-import org.springframework.security.core.userdetails.UserDetails
-import java.util.*
+import com.example.kfd_hw.database.entity.Role
+import com.example.kfd_hw.model.UserPrincipal
 
 interface TokenService {
-    fun generate(
-        userDetails: UserDetails,
-        expirationDate: Date,
-        additionalClaims: Map<String, Any> = emptyMap()
-    ): String
+
+    fun generateRefreshToken(userPrincipal: UserPrincipal): String
+
+    fun generateAccessToken(userPrincipal: UserPrincipal): String
+
     fun extractEmail(token: String): String?
+
+    fun extractRole(token: String): Role
 
     fun isExpired(token: String): Boolean
 
-    fun isValid(token: String, userDetails: UserDetails): Boolean
+    fun createContext(token: String, role: Role): UserPrincipal
 }

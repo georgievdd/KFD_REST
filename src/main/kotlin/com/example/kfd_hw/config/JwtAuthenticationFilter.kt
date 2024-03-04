@@ -1,22 +1,23 @@
 package com.example.kfd_hw.config
 
-import com.example.kfd_hw.service.TokenService
-import com.example.kfd_hw.service.impl.CustomUserDetailsService
+import com.example.kfd_hw.controller.ExceptionResolver
+import com.example.kfd_hw.model.exception.ApiException
+import com.example.kfd_hw.service.impl.TokenServiceImpl
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 
 @Component
 class JwtAuthenticationFilter(
-    private val userDetailsService: CustomUserDetailsService,
-    private val tokenService: TokenService,
+    private val tokenService: TokenServiceImpl,
+    private val exceptionResolver: ExceptionResolver
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -24,26 +25,26 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val authHeader: String? = request.getHeader("Authorization")
-        if (authHeader.doesNotContainBearerToken()) {
-            filterChain.doFilter(request, response)
-            return
-        }
-        val jwtToken = authHeader!!.extractToken()
-        val email = tokenService.extractEmail(jwtToken)
-        if (email != null && SecurityContextHolder.getContext().authentication == null) {
-            val user = userDetailsService.loadUserByUsername(email)
-            if (tokenService.isValid(jwtToken, user)) {
-                updateContext(user, request)
+        try {
+            val authHeader: String? = request.getHeader("Authorization")
+            if (authHeader.doesNotContainBearerToken()) {
+                filterChain.doFilter(request, response)
+                return
             }
-            filterChain.doFilter(request, response)
-        }
-    }
+            val jwtToken = authHeader!!.extractToken()
+            if (tokenService.isExpired(jwtToken)) {
+                throw ApiException(HttpStatus.FORBIDDEN, message = "token expired")
+            }
+            val email = tokenService.extractEmail(jwtToken)!!
+            val role = tokenService.extractRole(jwtToken)
 
-    private fun updateContext(user: UserDetails, request: HttpServletRequest) {
-        val authToken = UsernamePasswordAuthenticationToken(user, null, user.authorities)
-        authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-        SecurityContextHolder.getContext().authentication = authToken
+            val authentication = tokenService.createContext(email, role)
+            SecurityContextHolder.getContext().authentication = authentication
+            filterChain.doFilter(request, response)
+        } catch (e: Exception) {
+            println(e)
+            exceptionResolver.resolveException(request, response, ApiException(HttpStatus.FORBIDDEN, message = e.message.orEmpty()))
+        }
     }
 
     private fun String?.doesNotContainBearerToken(): Boolean =

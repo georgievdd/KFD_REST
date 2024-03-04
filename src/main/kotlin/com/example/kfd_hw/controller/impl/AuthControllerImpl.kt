@@ -22,14 +22,14 @@ class AuthControllerImpl(
 ) : AuthController {
 
     @PostMapping("/login")
-    override fun login(@Valid @RequestBody authRequest: AuthenticationRequest): AuthenticationResponse =
+    override fun login(@RequestBody authRequest: AuthenticationRequest): AuthenticationResponse =
         authenticationService.login(authRequest)
 
     @PostMapping("/registration")
-    override fun registration(@Valid @RequestBody registrationRequest: RegistrationRequest): AuthenticationResponse =
+    override fun registration(@RequestBody registrationRequest: RegistrationRequest): AuthenticationResponse =
         authenticationService.registration(registrationRequest)
 
     @PostMapping("/refresh")
     override fun refresh(@RequestBody request: RefreshTokenRequest): AuthenticationResponse =
-        authenticationService.refreshAccessToken(request.token)
+        authenticationService.refresh(request.token)
 }

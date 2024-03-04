@@ -1,7 +1,7 @@
 package com.example.kfd_hw.config
 
 import com.example.kfd_hw.database.dao.UserDao
-import com.example.kfd_hw.service.impl.CustomUserDetailsService
+import com.example.kfd_hw.service.impl.UserDetailsServiceImpl
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -19,7 +19,7 @@ class Configuration {
 
     @Bean
     fun userDetailsService(userDao: UserDao): UserDetailsService =
-        CustomUserDetailsService(userDao)
+        UserDetailsServiceImpl(userDao)
 
     @Bean
     fun encoder(): PasswordEncoder = BCryptPasswordEncoder()
