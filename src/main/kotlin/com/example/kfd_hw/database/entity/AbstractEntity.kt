@@ -12,8 +12,8 @@ import java.util.UUID
 @MappedSuperclass
 abstract class AbstractEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    var id: UUID = UUID.randomUUID()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0
         private set
 
     @Column(nullable = false, updatable = false)

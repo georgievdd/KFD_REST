@@ -4,6 +4,11 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import java.util.UUID
 
+
+/**
+ * В body хранятся либо номера ответов [1, 2...] либо ответ.
+ */
+
 @Entity
 class AnswerEntity(
     @Column(nullable = false, length = 250)
@@ -11,5 +16,6 @@ class AnswerEntity(
     @Column(nullable = false, length = 30)
     var authorEmail: String = "",
     @Column(nullable = false)
-    var questionnaireId: UUID = UUID.randomUUID()
+    var questionnaireId: Long = 0
 ) : AbstractEntity()
+

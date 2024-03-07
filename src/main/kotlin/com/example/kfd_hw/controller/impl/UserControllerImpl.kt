@@ -22,7 +22,7 @@ class UserControllerImpl(
         userService.getAll()
 
     @GetMapping("/{id}")
-    override fun getById(@PathVariable id: UUID): UserResponse =
+    override fun getById(@PathVariable id: Long): UserResponse =
         userService.getById(id)
 
 }

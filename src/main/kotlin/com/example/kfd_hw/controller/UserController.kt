@@ -6,5 +6,5 @@ import java.util.UUID
 interface UserController {
     fun getAll(): Iterable<UserResponse>
 
-    fun getById(id: UUID): UserResponse
+    fun getById(id: Long): UserResponse
 }

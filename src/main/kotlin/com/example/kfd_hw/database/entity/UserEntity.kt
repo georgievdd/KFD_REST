@@ -1,9 +1,6 @@
 package com.example.kfd_hw.database.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
+import jakarta.persistence.*
 
 @Entity
 class UserEntity(
@@ -15,8 +12,12 @@ class UserEntity(
     var password: String,
     @Column(nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
-    var role: Role = Role.USER
-) : AbstractEntity()
+    var role: Role = Role.USER,
+) : AbstractEntity() {
+    @OneToOne(fetch = FetchType.LAZY, cascade = arrayOf(CascadeType.ALL))
+    @JoinColumn(name = "refreshTokenId")
+    var refresh: RefreshTokenEntity? = null
+}
 
 
 enum class Role {

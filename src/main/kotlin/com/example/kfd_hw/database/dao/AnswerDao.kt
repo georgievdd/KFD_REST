@@ -6,6 +6,6 @@ import java.util.UUID
 
 
 interface AnswerDao : CommonDao<AnswerEntity> {
-    fun findByAuthorEmailAndQuestionnaireId(authorEmail: String, questionnaireId: UUID): AnswerEntity?
-    fun findAllByAuthorEmail(authorEmail: String): Iterable<AnswerEntity>
+    fun findByAuthorEmailAndQuestionnaireId(authorEmail: String, questionnaireId: Long): AnswerEntity?
+    fun findAllByQuestionnaireId(id: Long): Iterable<AnswerEntity>
 }

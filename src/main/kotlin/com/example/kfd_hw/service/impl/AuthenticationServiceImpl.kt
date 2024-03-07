@@ -60,18 +60,19 @@ class AuthenticationServiceImpl(
 
     override fun registration(registrationRequest: RegistrationRequest): AuthenticationResponse {
         val user = userDao.findByEmail(registrationRequest.email)
-
+        println("1")
         if (user != null)
             throw AlreadyExistException()
-
+        println("2")
         val userPrincipal = UserPrincipal(registrationRequest.email, Role.USER)
         val accessToken = tokenService.generateAccessToken(userPrincipal)
         val refreshToken = tokenService.generateRefreshToken(userPrincipal)
-
-        userDao.save(createUser(registrationRequest))
-        // добавить связь сущностям
-        refreshTokenDao.save(createRefresh(refreshToken, registrationRequest.email))
-
+        println("3")
+//        userDao.findByEmail(email = registrationRequest.email).
+        userDao.save(createUser(registrationRequest).apply {
+            refresh = createRefresh(refreshToken, registrationRequest.email)
+        })
+        println("4")
         return AuthenticationResponse(
             accessToken = accessToken,
             refreshToken = refreshToken,

@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 class RefreshTokenEntity(
-    @Column(nullable = false, length = 250)
+    @Column(nullable = false, updatable = false, length = 100)
     var email: String,
     @Column(nullable = false, length = 250)
     var refreshToken: String,

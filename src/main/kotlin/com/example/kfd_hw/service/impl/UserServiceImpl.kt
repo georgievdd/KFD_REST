@@ -16,7 +16,7 @@ class UserServiceImpl(
     override fun getAll(): Iterable<UserResponse> =
         dao.findAll().map { user -> user.mapToUserResponse() }
 
-    override fun getById(id: UUID): UserResponse =
+    override fun getById(id: Long): UserResponse =
         dao.findEntityById(id)?.mapToUserResponse() ?: throw NotFoundException()
 
     private fun UserEntity.mapToUserResponse(): UserResponse =

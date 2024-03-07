@@ -6,6 +6,6 @@ import org.springframework.data.repository.NoRepositoryBean
 import java.util.UUID
 
 @NoRepositoryBean
-interface CommonDao<T : AbstractEntity> : CrudRepository<T, UUID> {
-    fun findEntityById(id: UUID): T?
+interface CommonDao<T : AbstractEntity> : CrudRepository<T, Long> {
+    fun findEntityById(id: Long): T?
 }

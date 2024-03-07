@@ -7,5 +7,5 @@ import java.util.UUID
 interface UserService {
     fun getAll(): Iterable<UserResponse>
 
-    fun getById(id: UUID): UserResponse
+    fun getById(id: Long): UserResponse
 }

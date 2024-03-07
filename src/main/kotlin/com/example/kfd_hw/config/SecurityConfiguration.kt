@@ -27,7 +27,10 @@ class SecurityConfiguration(
             .authorizeHttpRequests {authorize ->
                 authorize
                     .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/questionnaire").hasRole(Role.ADMIN.name)
+                    .requestMatchers("/api/user/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/questionnaire/one_answer").hasRole(Role.ADMIN.name)
+                    .requestMatchers(HttpMethod.POST, "/api/questionnaire/few_answers").hasRole(Role.ADMIN.name)
+                    .requestMatchers(HttpMethod.POST, "/api/questionnaire/free_answer").hasRole(Role.ADMIN.name)
                     .anyRequest().fullyAuthenticated()
             }
             .sessionManagement {

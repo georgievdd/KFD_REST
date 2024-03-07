@@ -5,9 +5,9 @@ import java.time.LocalDateTime
 import java.util.*
 
 data class AnswerResponse(
-    val id: UUID,
-    val body: String,
+    val id: Long,
+    val body: Iterable<String>,
     val authorEmail: String,
-    val questionnaireId: UUID,
+    val questionnaireId: Long,
     val createdAt: LocalDateTime,
 )

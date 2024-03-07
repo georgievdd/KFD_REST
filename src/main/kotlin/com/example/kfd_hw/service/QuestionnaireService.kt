@@ -1,16 +1,14 @@
 package com.example.kfd_hw.service
 
-import com.example.kfd_hw.model.message.quesstinaire.AnswerCreatedResponse
-import com.example.kfd_hw.model.message.quesstinaire.AnswerResponse
-import com.example.kfd_hw.model.message.quesstinaire.QuestionnaireRequest
-import com.example.kfd_hw.model.message.quesstinaire.QuestionnaireResponse
-import java.util.UUID
+import com.example.kfd_hw.database.entity.QuestionnaireType
+import com.example.kfd_hw.model.message.quesstinaire.*
 
 interface QuestionnaireService {
-    fun getAll(): Iterable<QuestionnaireResponse>
-    fun getById(id: UUID): QuestionnaireResponse
-    fun answer(text: String, questionnaireId: UUID)
-    fun create(request: QuestionnaireRequest): QuestionnaireResponse
+    fun getAll(): Iterable<QuestionnaireCommon>
 
-    fun getMyAnswers(): Iterable<AnswerResponse>
+    fun getAllAnswers(id: Long): QuestionnaireWithAnswers
+    fun answer(authorEmail: String, request: AnswerRequest, id: Long): QuestionnaireAnswerResponse
+    fun createOneAnswer(request: QuestionnaireOneAnswerRequest, type: QuestionnaireType): QuestionnaireOneAnswerResponse
+    fun createFewAnswers(request: QuestionnaireFewAnswersRequest, type: QuestionnaireType): QuestionnaireFewAnswersResponse
+    fun createFreeAnswer(request: QuestionnaireFreeAnswerRequest, type: QuestionnaireType): QuestionnaireFreeAnswerResponse
 }
