@@ -19,13 +19,13 @@ class QuestionnaireServiceImpl(
     private val answerDao: AnswerDao
 ) : QuestionnaireService {
     override fun getAll(): Iterable<QuestionnaireCommon> {
-        return questionnaireDao.findAll().map { questionnaire -> questionnaire.mapToCommon() as QuestionnaireCommon }
+        return questionnaireDao.findAll().map { questionnaire -> questionnaire.mapToCommonResponse() }
     }
 
     override fun getAllAnswers(id: Long): QuestionnaireWithAnswers {
         val questionnaire = questionnaireDao.findEntityById(id) ?: throw NotFoundException()
         return QuestionnaireWithAnswers(
-            questionnaire = questionnaire.mapToCommon(),
+            questionnaire = questionnaire.mapToCommonResponse(),
             answers = answerDao.findAllByQuestionnaireId(id).map {
                 answer -> answer.mapToResponse(questionnaire)
             }
@@ -46,9 +46,6 @@ class QuestionnaireServiceImpl(
     }
 
     override fun answer(authorEmail: String, request: AnswerRequest, id: Long): QuestionnaireAnswerResponse {
-        println(authorEmail)
-        println(id)
-        println(answerDao.findByAuthorEmailAndQuestionnaireId(authorEmail, id))
         if (answerDao.findByAuthorEmailAndQuestionnaireId(authorEmail, id) != null)
             throw AlreadyExistException()
         val questionnaire = questionnaireDao.findEntityById(id) ?: throw NotFoundException()
@@ -60,7 +57,7 @@ class QuestionnaireServiceImpl(
         ))
         return QuestionnaireAnswerResponse(
             answer = answer.mapToResponse(questionnaire),
-            questionnaire = questionnaire.mapToCommon()
+            questionnaire = questionnaire.mapToCommonResponse()
         )
     }
 
@@ -112,7 +109,7 @@ class QuestionnaireServiceImpl(
     }
 
 
-    private fun QuestionnaireEntity.mapToCommon(): QuestionnaireCommon =
+    private fun QuestionnaireEntity.mapToCommonResponse(): QuestionnaireCommon =
         QuestionnaireCommon(
             question = question,
             id = id,
